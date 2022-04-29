@@ -116,14 +116,15 @@ jQuery(document).ready( function($) {
 
 	//Handle a AJAX call for Login, RememberMe or Registration
 	function lwaAjax( data, statusElement ){
+		statusElement = $('#alertModal .alert-body');
 		$('.lwa-loading').remove();
 		statusElement = $(statusElement);
 		if(data.result === true){
 			//Login Successful
-			statusElement.removeClass('lwa-status-invalid').addClass('lwa-status-confirm').html(data.message); //modify status content
+			statusElement.removeClass('text-danger').addClass('text-success').html(data.message); //modify status content
 		}else if( data.result === false ){
 			//Login Failed
-			statusElement.removeClass('lwa-status-confirm').addClass('lwa-status-invalid').html(data.error); //modify status content
+			statusElement.removeClass('text-success').addClass('text-danger').html(data.error); //modify status content
 			//We assume a link in the status message is for a forgotten password
 			statusElement.find('a').on('click', function(event){
 				var remember_form = $(this).parents('.lwa').find('form.lwa-remember');
@@ -134,8 +135,10 @@ jQuery(document).ready( function($) {
 			});
 		}else{
 			//If there already is an error element, replace text contents, otherwise create a new one and insert it
-			statusElement.removeClass('lwa-status-confirm').addClass('lwa-status-invalid').html('An error has occured. Please try again.'); //modify status content
+			statusElement.removeClass('text-success').addClass('text-danger').html('An error has occured. Please try again.'); //modify status content
 		}
+
+		$('#alertModal').modal('show');
 	}
 
 });

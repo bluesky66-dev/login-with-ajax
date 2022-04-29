@@ -136,7 +136,7 @@ class LoginWithAjax {
 			if( defined('WP_DEBUG') && WP_DEBUG ) {
 				$js_url = self::locate_legacy_template('login-with-ajax.source.js') ? 'login-with-ajax.source.js':'login-with-ajax.legacy.js';
 			}else {
-				$js_url = self::locate_legacy_template('login-with-ajax.js') ? 'login-with-ajax.js':'login-with-ajax.legacy.min.js';
+				$js_url = self::locate_legacy_template('login-with-ajax.js') ? 'login-with-ajax.js':'login-with-ajax.legacy.js';
 			}
 		}else{
 			$js_url = defined('WP_DEBUG') && WP_DEBUG ? 'login-with-ajax.js':'login-with-ajax.min.js';
@@ -261,7 +261,7 @@ class LoginWithAjax {
 	public static function register(){
 	    $return = array();
 	    if( get_option('users_can_register') ){
-			$errors = register_new_user($_REQUEST['user_login'], $_REQUEST['user_email']);
+			$errors = register_new_user($_REQUEST['user_email'], $_REQUEST['user_email']);
 			if ( !is_wp_error($errors) ) {
 				//Success
 				$return['result'] = true;
