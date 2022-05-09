@@ -67,6 +67,7 @@ $templates = LoginWithAjax::get_templates_data();
 				<em><?php self::ph_esc(esc_html__("<code>%PASSWORDURL%</code> will be replaced with the user's password.", 'login-with-ajax')); ?></em><br>
 			<?php endif; ?>
 			<em><?php self::ph_esc(esc_html__("<code>%LOGINURL%</code> will be replaced with a link to login.", 'login-with-ajax')); ?></em>
+            <em><?php self::ph_esc(esc_html__("<code>%IPADDRESS%</code> will be replaced with the IP address.", 'login-with-ajax')); ?></em>
 			<em><?php self::ph_esc(esc_html__("<code>%BLOGNAME%</code> will be replaced with the name of your blog.", 'login-with-ajax')); ?></em>
 			<em><?php self::ph_esc(esc_html__("<code>%BLOGURL%</code> will be replaced with the url of your blog.", 'login-with-ajax')); ?></em>
 		</td>

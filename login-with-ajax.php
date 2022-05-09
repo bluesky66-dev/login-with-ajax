@@ -587,12 +587,47 @@ class LoginWithAjax {
 		return static::get_output( $atts );
 	}
 
+	public static function get_user_ip(){
+		$client  = @$_SERVER["HTTP_CF_CONNECTING_IP"];
+		$forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
+		$a = @$_SERVER['HTTP_X_FORWARDED'];
+		$b = @$_SERVER['HTTP_FORWARDED_FOR'];
+		$c = @$_SERVER['HTTP_FORWARDED'];
+		$d = @$_SERVER['HTTP_CLIENT_IP'];
+		$remote  = @$_SERVER['REMOTE_ADDR'];
+
+		if(filter_var($client, FILTER_VALIDATE_IP)){
+			$ip = $client;
+		}
+		elseif(filter_var($forward, FILTER_VALIDATE_IP)){
+			$ip = $forward;
+		}
+		elseif(filter_var($a, FILTER_VALIDATE_IP)){
+			$ip = $a;
+		}
+		elseif(filter_var($b, FILTER_VALIDATE_IP)){
+			$ip = $b;
+		}
+		elseif(filter_var($c, FILTER_VALIDATE_IP)){
+			$ip = $c;
+		}
+		elseif(filter_var($remote, FILTER_VALIDATE_IP)){
+			$ip = $remote;
+		}
+		else {
+			$ip = '';
+		}
+
+		return $ip;
+	}
+
 	public static function new_user_notification($user_login, $login_link, $user_email, $blogname){
 		//Copied out of /wp-includes/pluggable.php
 		$message = self::$data['notification_message'];
 		$message = str_replace('%USERNAME%', $user_login, $message);
 		$message = str_replace('%PASSWORDURL%', $login_link, $message);
 		$message = str_replace('%LOGINURL%', network_site_url('/login/'), $message);
+		$message = str_replace('%IPADDRESS%', static::get_user_ip(), $message);
 		$message = str_replace('%BLOGNAME%', $blogname, $message);
 		$message = str_replace('%BLOGURL%', get_bloginfo('wpurl'), $message);
 
@@ -622,6 +657,7 @@ class LoginWithAjax {
 		$message = str_replace('%USERNAME%', $user_login, $message);
 		$message = str_replace('%PASSWORDURL%', $login_link, $message);
 		$message = str_replace('%LOGINURL%', network_site_url('/login/'), $message);
+		$message = str_replace('%IPADDRESS%', static::get_user_ip(), $message);
 		$message = str_replace('%BLOGNAME%', $blogname, $message);
 		$message = str_replace('%BLOGURL%', get_bloginfo('wpurl'), $message);
 
