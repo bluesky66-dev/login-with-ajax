@@ -218,7 +218,7 @@ class LoginWithAjax {
 				self::$current_user = $loginResult;
 				/* @var $loginResult WP_User */
 				$return['result'] = true;
-				$return['message'] = __("Login Successful, redirecting...",'login-with-ajax');
+				$return['message'] = __("ログイン成功",'login-with-ajax');
 				//Do a redirect if necessary
 				$redirect = self::getLoginRedirect(self::$current_user);
 				if( !empty($_REQUEST['redirect_to']) ) $redirect= wp_sanitize_redirect($_REQUEST['redirect_to']);
@@ -232,7 +232,7 @@ class LoginWithAjax {
 						$query_vars = ( !empty($_REQUEST['template']) ) ? "&template=".esc_attr($_REQUEST['template']) : '';
 						$query_vars .= ( !empty($_REQUEST['lwa_profile_link']) ) ? "&lwa_profile_link=1" : '';
 						$return['widget'] = get_bloginfo('wpurl')."?login-with-ajax-widget=1$query_vars";
-						$return['message'] = __("Login successful, updating...",'login-with-ajax');
+						$return['message'] = __("ログイン成功",'login-with-ajax');
 					}
 				}
 			} elseif ( is_wp_error($loginResult) ) {
@@ -592,16 +592,41 @@ class LoginWithAjax {
 		$message = self::$data['notification_message'];
 		$message = str_replace('%USERNAME%', $user_login, $message);
 		$message = str_replace('%PASSWORDURL%', $login_link, $message);
+		$message = str_replace('%LOGINURL%', network_site_url('/login/'), $message);
 		$message = str_replace('%BLOGNAME%', $blogname, $message);
 		$message = str_replace('%BLOGURL%', get_bloginfo('wpurl'), $message);
 
 		$subject = self::$data['notification_subject'];
+		$subject = str_replace('%USERNAME%', $user_login, $subject);
 		$subject = str_replace('%BLOGNAME%', $blogname, $subject);
 		$subject = str_replace('%BLOGURL%', get_bloginfo('wpurl'), $subject);
 
 		wp_mail($user_email, $subject, $message);
 	}
 
+	public static function user_forget_password_title($user_login, $blogname){
+		//Copied out of /wp-includes/pluggable.php
+
+		$subject = self::$data['notification_forget_subject'];
+		$subject = str_replace('%USERNAME%', $user_login, $subject);
+		$subject = str_replace('%BLOGNAME%', $blogname, $subject);
+		$subject = str_replace('%BLOGURL%', get_bloginfo('wpurl'), $subject);
+
+		return $subject;
+	}
+
+
+	public static function user_forget_password_message($user_login, $login_link, $blogname){
+		//Copied out of /wp-includes/pluggable.php
+		$message = self::$data['notification_forget_message'];
+		$message = str_replace('%USERNAME%', $user_login, $message);
+		$message = str_replace('%PASSWORDURL%', $login_link, $message);
+		$message = str_replace('%LOGINURL%', network_site_url('/login/'), $message);
+		$message = str_replace('%BLOGNAME%', $blogname, $message);
+		$message = str_replace('%BLOGURL%', get_bloginfo('wpurl'), $message);
+
+		return $message;
+	}
 	/*
 	 * Auxillary Functions
 	 */

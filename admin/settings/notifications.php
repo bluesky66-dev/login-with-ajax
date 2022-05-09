@@ -17,54 +17,45 @@ $templates = LoginWithAjax::get_templates_data();
 	</tr>
 	<tr valign="top">
 		<th>
-			<label><?php esc_html_e("Subject", 'login-with-ajax'); ?></label>
+			<label><?php esc_html_e("New User Subject", 'login-with-ajax'); ?></label>
 		</th>
 		<td>
 			<?php
 			if(empty($lwa_data['notification_subject'])){
-				$lwa_data['notification_subject'] = esc_html__('Your registration at %BLOGNAME%', 'login-with-ajax');
+				$lwa_data['notification_subject'] = esc_html__('[%BLOGNAME%] ログインの詳細', 'login-with-ajax');
 			}
 			?>
-			<input type="text" name="lwa_notification_subject" value='<?php echo (!empty($lwa_data['notification_subject'])) ? esc_attr($lwa_data['notification_subject']) : ''; ?>' class='wide'>
+			<input type="text" name="lwa_notification_subject" value='<?php echo (!empty($lwa_data['notification_subject'])) ? esc_attr($lwa_data['notification_subject']) : ''; ?>' class='wide' style="width: 100%;">
 			<em><?php self::ph_esc(esc_html__("<code>%USERNAME%</code> will be replaced with a username.", 'login-with-ajax')); ?></em><br>
-			<?php if( version_compare($wp_version, '4.3', '>=') ): ?>
-				<em><strong><?php echo sprintf(esc_html__("%s will be replaced with a link to set the user password.", 'login-with-ajax'), '<code>%PASSWORDURL%</code>'); ?></strong></em><br>
-			<?php else: ?>
-				<em><?php self::ph_esc(esc_html__("<code>%PASSWORDURL%</code> will be replaced with the user's password.", 'login-with-ajax')); ?></em><br>
-			<?php endif; ?>
 			<em><?php self::ph_esc(esc_html__("<code>%BLOGNAME%</code> will be replaced with the name of your blog.", 'login-with-ajax')); ?></em>
 			<em><?php self::ph_esc(esc_html__("<code>%BLOGURL%</code> will be replaced with the url of your blog.", 'login-with-ajax')); ?></em>
 		</td>
 	</tr>
 	<tr valign="top">
 		<th>
-			<label><?php _e("Message", 'login-with-ajax'); ?></label>
+			<label><?php _e("New User Message", 'login-with-ajax'); ?></label>
 		</th>
 		<td>
 			<?php
 			if( empty($lwa_data['notification_message']) ){
 				if( version_compare($wp_version, '4.3', '>=') ){
-					$lwa_data['notification_message'] = esc_html__('Thanks for signing up to our blog.
+					$lwa_data['notification_message'] = esc_html__('ユーザー名: %USERNAME%
 
-You can login with the following credentials by visiting %BLOGURL%
+パスワードを設定するには以下のアドレスへ移動してください。
 
-Username: %USERNAME%
-To set your password, visit the following address: %PASSWORDURL%
+%PASSWORDURL%
+%LOGINURL%
 
-We look forward to your next visit!
-
-The team at %BLOGNAME%', 'login-with-ajax');
+', 'login-with-ajax');
 				}else{
-					$lwa_data['notification_message'] = esc_html__('Thanks for signing up to our blog.
+					$lwa_data['notification_message'] = esc_html__('ユーザー名: %USERNAME%
 
-You can login with the following credentials by visiting %BLOGURL%
+パスワードを設定するには以下のアドレスへ移動してください。
 
-Username : %USERNAME%
-Password : %PASSWORDURL%
+%PASSWORDURL%
+%LOGINURL%
 
-We look forward to your next visit!
-
-The team at %BLOGNAME%', 'login-with-ajax');
+', 'login-with-ajax');
 				}
 			}
 			?>
@@ -75,10 +66,76 @@ The team at %BLOGNAME%', 'login-with-ajax');
 			<?php else: ?>
 				<em><?php self::ph_esc(esc_html__("<code>%PASSWORDURL%</code> will be replaced with the user's password.", 'login-with-ajax')); ?></em><br>
 			<?php endif; ?>
+			<em><?php self::ph_esc(esc_html__("<code>%LOGINURL%</code> will be replaced with a link to login.", 'login-with-ajax')); ?></em>
 			<em><?php self::ph_esc(esc_html__("<code>%BLOGNAME%</code> will be replaced with the name of your blog.", 'login-with-ajax')); ?></em>
 			<em><?php self::ph_esc(esc_html__("<code>%BLOGURL%</code> will be replaced with the url of your blog.", 'login-with-ajax')); ?></em>
 		</td>
 	</tr>
+    <tr valign="top">
+        <th>
+            <label><?php esc_html_e("Forget Password Subject", 'login-with-ajax'); ?></label>
+        </th>
+        <td>
+			<?php
+			if(empty($lwa_data['notification_forget_subject'])){
+				$lwa_data['notification_forget_subject'] = esc_html__('[%BLOGNAME%] パスワードのリセット', 'login-with-ajax');
+			}
+			?>
+            <input type="text" name="lwa_notification_forget_subject" value='<?php echo (!empty($lwa_data['notification_forget_subject'])) ? esc_attr($lwa_data['notification_forget_subject']) : ''; ?>' class='wide' style="width: 100%;">
+            <em><?php self::ph_esc(esc_html__("<code>%USERNAME%</code> will be replaced with a username.", 'login-with-ajax')); ?></em><br>
+            <em><?php self::ph_esc(esc_html__("<code>%BLOGNAME%</code> will be replaced with the name of your blog.", 'login-with-ajax')); ?></em>
+            <em><?php self::ph_esc(esc_html__("<code>%BLOGURL%</code> will be replaced with the url of your blog.", 'login-with-ajax')); ?></em>
+        </td>
+    </tr>
+    <tr valign="top">
+        <th>
+            <label><?php _e("Forget Password Message", 'login-with-ajax'); ?></label>
+        </th>
+        <td>
+			<?php
+			if( empty($lwa_data['notification_forget_message']) ){
+				if( version_compare($wp_version, '4.3', '>=') ){
+					$lwa_data['notification_forget_message'] = esc_html__('どなたかが次のアカウントのパスワードリセットをリクエストしました:
+
+サイト名: %BLOGNAME%
+ユーザー名: %USERNAME%
+
+もしこれが間違いだった場合は、このメールを無視すれば何も起こりません。
+
+パスワードをリセットするには、以下へアクセスしてください。
+
+%PASSWORDURL%
+
+パスワードリセットは IP アドレス %IPADDRESS% からリクエストされました。', 'login-with-ajax');
+				} else {
+					$lwa_data['notification_forget_message'] = esc_html__('どなたかが次のアカウントのパスワードリセットをリクエストしました:
+
+サイト名: %BLOGNAME%
+ユーザー名: %USERNAME%
+
+もしこれが間違いだった場合は、このメールを無視すれば何も起こりません。
+
+パスワードをリセットするには、以下へアクセスしてください。
+
+%PASSWORDURL%
+
+パスワードリセットは IP アドレス %IPADDRESS% からリクエストされました。', 'login-with-ajax');
+				}
+			}
+			?>
+            <textarea name="lwa_notification_forget_message" class='wide' style="width:100%; height:250px;"><?php echo esc_html($lwa_data['notification_forget_message']); ?></textarea>
+            <em><?php self::ph_esc(esc_html__("<code>%USERNAME%</code> will be replaced with a username.", 'login-with-ajax')); ?></em><br>
+			<?php if( version_compare($wp_version, '4.3', '>=') ): ?>
+                <em><strong><?php echo sprintf(esc_html__("%s will be replaced with a link to set the user password.", 'login-with-ajax'), '<code>%PASSWORDURL%</code>'); ?></strong></em><br>
+			<?php else: ?>
+                <em><?php self::ph_esc(esc_html__("<code>%PASSWORDURL%</code> will be replaced with the user's password.", 'login-with-ajax')); ?></em><br>
+			<?php endif; ?>
+            <em><?php self::ph_esc(esc_html__("<code>%LOGINURL%</code> will be replaced with a link to login.", 'login-with-ajax')); ?></em>
+            <em><?php self::ph_esc(esc_html__("<code>%IPADDRESS%</code> will be replaced with the IP address.", 'login-with-ajax')); ?></em>
+            <em><?php self::ph_esc(esc_html__("<code>%BLOGNAME%</code> will be replaced with the name of your blog.", 'login-with-ajax')); ?></em>
+            <em><?php self::ph_esc(esc_html__("<code>%BLOGURL%</code> will be replaced with the url of your blog.", 'login-with-ajax')); ?></em>
+        </td>
+    </tr>
 </table	>
 <?php do_action('lwa_settings_page_notifications'); ?>
 <?php echo $lwa_submit_button; ?>

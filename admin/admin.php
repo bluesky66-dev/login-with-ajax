@@ -124,6 +124,10 @@ class Admin{
 					if($postValue != ''){
 						$lwa_data[substr($postKey, 4)] = sanitize_textarea_field($postValue);
 					}
+				}elseif( $postKey === 'lwa_notification_forget_message' ){
+					if($postValue != ''){
+						$lwa_data[substr($postKey, 4)] = sanitize_textarea_field($postValue);
+					}
 				}elseif( $postKey === 'lwa_template_color' ){
 					$lwa_data['template_color'] = array('H'=>220, 'S' => 87, 'L' => 59);
 					$lwa_data['template_color']['H'] = absint($postValue['H']);
@@ -169,11 +173,11 @@ class Admin{
 				$tabs = $fixed_tabs = array(
 					'general' => esc_html__('General Options','login-with-ajax'),
 					'redirection' => esc_html__('Redirection','login-with-ajax'),
-					'notifications' => esc_html__('Notifications','login-with-ajax'),
+					'notifications' => esc_html__('Email Templates','login-with-ajax'),
 				);
 				if( !defined('LWA_PRO_VERSION') && (!defined('LWA_REMOVE_PRO_NAGS') || !LWA_REMOVE_PRO_NAGS) ){
-					$tabs['security'] = $fixed_tabs['security'] = esc_html__('Security','login-with-ajax');
-					$tabs['go-pro'] = $fixed_tabs['go-pro'] = '<span style="color:green;">'. esc_html__('Pro Features!','login-with-ajax') . '</span>';
+//					$tabs['security'] = $fixed_tabs['security'] = esc_html__('Security','login-with-ajax');
+//					$tabs['go-pro'] = $fixed_tabs['go-pro'] = '<span style="color:green;">'. esc_html__('Pro Features!','login-with-ajax') . '</span>';
 				}
 				$tabs = apply_filters('lwa_settings_page_tabs', $tabs);
 				foreach( $tabs as $tab_key => $tab_name ){
