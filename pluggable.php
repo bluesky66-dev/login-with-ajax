@@ -76,7 +76,7 @@ endif;
 
 function fos_retrieve_password_title($title, $user_login, $user_data) {
 	$blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
-	LoginWithAjax::user_forget_password_title($user_login, $blogname);
+	return LoginWithAjax::user_forget_password_title($user_login, $blogname);
 }
 
 add_filter('retrieve_password_title', 'fos_retrieve_password_title', 10, 3);
@@ -84,7 +84,7 @@ add_filter('retrieve_password_title', 'fos_retrieve_password_title', 10, 3);
 function fos_retrieve_password_message($message, $key, $user_login, $user_data) {
 	$blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
 	$password_link = network_site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user_login ), 'login' );
-	LoginWithAjax::user_forget_password_message($user_login, $password_link, $blogname);
+	return LoginWithAjax::user_forget_password_message($user_login, $password_link, $blogname);
 }
 
 add_filter('retrieve_password_message', 'fos_retrieve_password_message', 10, 4);
