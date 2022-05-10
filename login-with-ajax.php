@@ -321,6 +321,8 @@ class LoginWithAjax {
 
 		$rp_key = $_POST['key'];
 		$rp_login = $_POST['login'];
+		$pass1 = $_POST['pass1'] ?? '';
+		$pass2 = $_POST['pass2'] ?? '';
 
 		if ( isset( $_POST['key'] ) && isset( $_POST['login'] ) ) {
 			$user = check_password_reset_key( $rp_key, $rp_login );
@@ -335,13 +337,18 @@ class LoginWithAjax {
 				$return['error'] = __( '<strong>Error</strong>: Your password reset link appears to be invalid. Please request a new link below.');
 			}
 		} else {
-			if ( isset( $_POST['pass1'] ) && $_POST['pass1'] !== $_POST['pass2'] ) {
+			if (empty($pass1)) {
+				$return['error'] = __( '<strong>エラー</strong>: パスワードを入力してください。' );
+			} elseif (empty($pass2)) {
+				$return['error'] = __( '<strong>エラー</strong>: 確認パスワードを入力してください。' );
+			} elseif ( isset( $_POST['pass1'] ) && $_POST['pass1'] !== $_POST['pass2'] ) {
 				$return['error'] = __( '<strong>Error</strong>: The passwords do not match.' );
 			} else {
 				if ( isset( $_POST['pass1'] ) && ! empty( $_POST['pass1'] ) ) {
 					reset_password( $user, $_POST['pass1'] );
 					$return['result'] = true;
-					$return['error'] = __( 'Your password has been reset.' );
+					$return['error'] = '';
+					$return['message'] = __( 'Your password has been reset.' );
 				}
 			}
 		}
@@ -671,7 +678,7 @@ class LoginWithAjax {
 		$message = str_replace('%BLOGNAME%', $blogname, $message);
 		$message = str_replace('%BLOGURL%', get_bloginfo('wpurl'), $message);
 
-		file_put_contents(LOGIN_WITH_AJAX_PATH.'/new_user_notification.txt', $message);
+//		file_put_contents(LOGIN_WITH_AJAX_PATH.'/new_user_notification.txt', $message);
 
 		$subject = self::$data['notification_subject'];
 		$subject = str_replace('%USERNAME%', $user_login, $subject);
@@ -703,7 +710,7 @@ class LoginWithAjax {
 		$message = str_replace('%BLOGNAME%', $blogname, $message);
 		$message = str_replace('%BLOGURL%', get_bloginfo('wpurl'), $message);
 
-		file_put_contents(LOGIN_WITH_AJAX_PATH.'/user_forget_password_message.txt', $message);
+//		file_put_contents(LOGIN_WITH_AJAX_PATH.'/user_forget_password_message.txt', $message);
 
 		return $message;
 	}
