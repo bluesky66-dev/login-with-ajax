@@ -194,6 +194,9 @@ class LoginWithAjax {
 			case 'remember': //Remember the password
 				$return = self::remember();
 				break;
+			case 'reset-pass': //Reset the password
+				$return = self::resetPassword();
+				break;
 			case 'register': //Register
 			case 'registration':
 				$return = self::register();
@@ -308,6 +311,43 @@ class LoginWithAjax {
 			$return['error'] = __('An undefined error has ocurred', 'login-with-ajax');
 		}
 		$return['action'] = 'remember';
+		//Return the result array with errors etc.
+		return $return;
+	}
+
+	public static function resetPassword(){
+		$return = array(); //What we send back
+		$return['result'] = false;
+
+		$rp_key = $_POST['key'];
+		$rp_login = $_POST['login'];
+
+		if ( isset( $_POST['key'] ) && isset( $_POST['login'] ) ) {
+			$user = check_password_reset_key( $rp_key, $rp_login );
+		} else {
+			$user = false;
+		}
+
+		if ( ! $user || is_wp_error( $user ) ) {
+			if ( $user && $user->get_error_code() === 'expired_key' ) {
+				$return['error'] = __( '<strong>Error</strong>: Your password reset link has expired. Please request a new link below.' );
+			} else {
+				$return['error'] = __( '<strong>Error</strong>: Your password reset link appears to be invalid. Please request a new link below.');
+			}
+		} else {
+			if ( isset( $_POST['pass1'] ) && $_POST['pass1'] !== $_POST['pass2'] ) {
+				$return['error'] = __( '<strong>Error</strong>: The passwords do not match.' );
+			} else {
+				if ( isset( $_POST['pass1'] ) && ! empty( $_POST['pass1'] ) ) {
+					reset_password( $user, $_POST['pass1'] );
+					$return['result'] = true;
+					$return['error'] = __( 'Your password has been reset.' );
+				}
+			}
+		}
+
+		$return['action'] = 'reset-pass';
+		$return['redirect'] = esc_url( wp_login_url());
 		//Return the result array with errors etc.
 		return $return;
 	}
@@ -631,6 +671,8 @@ class LoginWithAjax {
 		$message = str_replace('%BLOGNAME%', $blogname, $message);
 		$message = str_replace('%BLOGURL%', get_bloginfo('wpurl'), $message);
 
+		file_put_contents(LOGIN_WITH_AJAX_PATH.'/new_user_notification.txt', $message);
+
 		$subject = self::$data['notification_subject'];
 		$subject = str_replace('%USERNAME%', $user_login, $subject);
 		$subject = str_replace('%BLOGNAME%', $blogname, $subject);
@@ -660,6 +702,8 @@ class LoginWithAjax {
 		$message = str_replace('%IPADDRESS%', static::get_user_ip(), $message);
 		$message = str_replace('%BLOGNAME%', $blogname, $message);
 		$message = str_replace('%BLOGURL%', get_bloginfo('wpurl'), $message);
+
+		file_put_contents(LOGIN_WITH_AJAX_PATH.'/user_forget_password_message.txt', $message);
 
 		return $message;
 	}

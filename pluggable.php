@@ -58,7 +58,7 @@ function wp_new_user_notification( $user_id, $deprecated = null, $notify = '' ) 
 
 	//LWA Customizations START
     //generate password link like it's done further down
-    $password_link = network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user->user_login), 'login');
+    $password_link = network_site_url("reset-password?action=rp&key=$key&login=" . rawurlencode($user->user_login), 'login');
     if( !empty($deprecated) ) $password_link = $deprecated; // for <4.3 compatability
     LoginWithAjax::new_user_notification($user->user_login, $password_link, $user->user_email, $blogname, $deprecated);
     return;
@@ -66,7 +66,7 @@ function wp_new_user_notification( $user_id, $deprecated = null, $notify = '' ) 
 	
 	$message = sprintf(__('Username: %s'), $user->user_login) . "\r\n\r\n";
 	$message .= __('To set your password, visit the following address:') . "\r\n\r\n";
-	$message .= '<' . network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user->user_login), 'login') . ">\r\n\r\n";
+	$message .= '<' . network_site_url("reset-password?action=rp&key=$key&login=" . rawurlencode($user->user_login), 'login') . ">\r\n\r\n";
 
 	$message .= wp_login_url() . "\r\n";
 
@@ -83,7 +83,7 @@ add_filter('retrieve_password_title', 'fos_retrieve_password_title', 10, 3);
 
 function fos_retrieve_password_message($message, $key, $user_login, $user_data) {
 	$blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
-	$password_link = network_site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user_login ), 'login' );
+	$password_link = network_site_url( "reset-password?action=rp&key=$key&login=" . rawurlencode( $user_login ), 'login' );
 	return LoginWithAjax::user_forget_password_message($user_login, $password_link, $blogname);
 }
 
