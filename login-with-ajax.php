@@ -113,6 +113,7 @@ class LoginWithAjax {
 			add_shortcode('lwa', 'LoginWithAjax::shortcode');
 		}
 		self::register_scripts_and_styles();
+
 		do_action('lwa_loaded');
 	}
 	
@@ -935,9 +936,6 @@ add_action( 'widgets_init', 'LoginWithAjax::widgets_init' );
 
 //Installation and Updates
 $lwa_data = get_option('lwa_data');
-if( version_compare( get_option('lwa_version',0), LOGIN_WITH_AJAX_VERSION, '<' ) ){
-    include_once('lwa-install.php');
-}
 
 //Include admin file if needed
 if(is_admin()){

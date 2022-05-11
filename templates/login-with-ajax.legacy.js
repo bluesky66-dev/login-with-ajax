@@ -139,6 +139,10 @@ jQuery(document).ready( function($) {
 		}
 
 		$('#alertModal').modal('show');
+
+		if (data.action === 'reset-pass') {
+			window.location.href = data.redirect;
+		}
 	}
 
 });
