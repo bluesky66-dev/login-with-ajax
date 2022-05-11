@@ -333,9 +333,9 @@ class LoginWithAjax {
 
 		if ( ! $user || is_wp_error( $user ) ) {
 			if ( $user && $user->get_error_code() === 'expired_key' ) {
-				$return['error'] = __( '<strong>Error</strong>: Your password reset link has expired. Please request a new link below.' );
+				$return['error'] = __( '<strong>エラー</strong>: パスワードリセットリンクが期限切れです。' );
 			} else {
-				$return['error'] = __( '<strong>Error</strong>: Your password reset link appears to be invalid. Please request a new link below.');
+				$return['error'] = __( '<strong>エラー</strong>: パスワードリセット用リンクが無効のようです。');
 			}
 		} else {
 			if (empty($pass1)) {
@@ -349,13 +349,14 @@ class LoginWithAjax {
 					reset_password( $user, $_POST['pass1'] );
 					$return['result'] = true;
 					$return['error'] = '';
+					$return['redirect'] = esc_url( home_url('/login/') );
 					$return['message'] = __( 'Your password has been reset.' );
 				}
 			}
 		}
 
 		$return['action'] = 'reset-pass';
-		$return['redirect'] = esc_url( wp_login_url());
+
 		//Return the result array with errors etc.
 		return $return;
 	}
@@ -711,7 +712,7 @@ class LoginWithAjax {
 		$message = str_replace('%BLOGNAME%', $blogname, $message);
 		$message = str_replace('%BLOGURL%', get_bloginfo('wpurl'), $message);
 
-//		file_put_contents(LOGIN_WITH_AJAX_PATH.'/user_forget_password_message.txt', $message);
+		file_put_contents(LOGIN_WITH_AJAX_PATH.'/user_forget_password_message.txt', $message);
 
 		return $message;
 	}

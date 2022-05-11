@@ -140,7 +140,7 @@ jQuery(document).ready( function($) {
 
 		$('#alertModal').modal('show');
 
-		if (data.action === 'reset-pass') {
+		if (data.action === 'reset-pass' && data.result === true) {
 			window.location.href = data.redirect;
 		}
 	}
