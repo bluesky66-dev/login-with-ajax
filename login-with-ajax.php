@@ -680,7 +680,7 @@ class LoginWithAjax {
 		$message = str_replace('%BLOGNAME%', $blogname, $message);
 		$message = str_replace('%BLOGURL%', get_bloginfo('wpurl'), $message);
 
-//		file_put_contents(LOGIN_WITH_AJAX_PATH.'/new_user_notification.txt', $message);
+		// file_put_contents(LOGIN_WITH_AJAX_PATH.'/new_user_notification.txt', $message);
 
 		$subject = self::$data['notification_subject'];
 		$subject = str_replace('%USERNAME%', $user_login, $subject);
@@ -712,7 +712,7 @@ class LoginWithAjax {
 		$message = str_replace('%BLOGNAME%', $blogname, $message);
 		$message = str_replace('%BLOGURL%', get_bloginfo('wpurl'), $message);
 
-		file_put_contents(LOGIN_WITH_AJAX_PATH.'/user_forget_password_message.txt', $message);
+		//file_put_contents(LOGIN_WITH_AJAX_PATH.'/user_forget_password_message.txt', $message);
 
 		return $message;
 	}
