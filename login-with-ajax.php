@@ -247,11 +247,11 @@ class LoginWithAjax {
 			} else {
 				//Undefined Error
 				$return['result'] = false;
-				$return['error'] = __('An undefined error has ocurred', 'login-with-ajax');
+				$return['error'] = __('予期しないエラーが発生しました', 'login-with-ajax');
 			}
 		}else{
 			$return['result'] = false;
-			$return['error'] = __('Please supply your username and password.', 'login-with-ajax');
+			$return['error'] = __('ユーザー名とパスワードを入力して下さい', 'login-with-ajax');
 		}
 		$return['action'] = 'login';
 		//Return the result array with errors etc.
@@ -269,7 +269,7 @@ class LoginWithAjax {
 			if ( !is_wp_error($errors) ) {
 				//Success
 				$return['result'] = true;
-				$return['message'] = __('Registration complete. Please check your e-mail.','login-with-ajax');
+				$return['message'] = __('登録完了。メールを確認して下さい。','login-with-ajax');
 				//add user to blog if multisite
 				if( is_multisite() ){
 				    add_user_to_blog(get_current_blog_id(), $errors, get_option('default_role'));
@@ -282,7 +282,7 @@ class LoginWithAjax {
 			$return['action'] = 'register';
 	    }else{
 	    	$return['result'] = false;
-			$return['error'] = __('Registration has been disabled.','login-with-ajax');
+			$return['error'] = __('登録は無効化されました。','login-with-ajax');
 	    }
 		return $return;
 	}
@@ -300,7 +300,7 @@ class LoginWithAjax {
 		if ( $result === true ) {
 			//Password correctly remembered
 			$return['result'] = true;
-			$return['message'] = __("We have sent you an email", 'login-with-ajax');
+			$return['message'] = __("メールを送りました", 'login-with-ajax');
 		} elseif ( strtolower(get_class($result)) == 'wp_error' ) {
 			//Something went wrong
 			/* @var $result WP_Error */
@@ -309,7 +309,7 @@ class LoginWithAjax {
 		} else {
 			//Undefined Error
 			$return['result'] = false;
-			$return['error'] = __('An undefined error has ocurred', 'login-with-ajax');
+			$return['error'] = __('予期しないエラーが発生しました', 'login-with-ajax');
 		}
 		$return['action'] = 'remember';
 		//Return the result array with errors etc.
